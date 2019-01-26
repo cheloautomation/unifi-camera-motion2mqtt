@@ -43,7 +43,10 @@ def main():
     while True:
         for event in inotify(log_file):
             cam = motion(log_file, cameras)
-            mqtt_publish(cam['cam_name'], cam['motion_type'])
+            if cam['motion_type'] == 'stop':
+                mqtt_publish(cam['cam_name'], 'NO motion')
+            else:
+                mqtt_publish(mqtt_ip, cam['cam_name'], 'MOTION')
 
 
 if __name__ == '__main__':
